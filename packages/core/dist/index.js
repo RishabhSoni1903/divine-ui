@@ -2529,8 +2529,88 @@ function Dialog2({
     )
   ] }) });
 }
+
+// src/components/Card/Card.tsx
+import { cva as cva3 } from "class-variance-authority";
+import { forwardRef as forwardRef11 } from "react";
+import { jsx as jsx11 } from "react/jsx-runtime";
+var cardVariants = cva3(
+  "rounded-sm shadow-sm border border border-gray-300 bg-white text-slate-950 shadow-sm",
+  {
+    variants: {
+      variant: {
+        default: "",
+        outlined: "shadow-none",
+        elevated: "shadow-lg"
+      }
+    },
+    defaultVariants: {
+      variant: "default"
+    }
+  }
+);
+function CardHeader({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsx11(
+    "div",
+    {
+      className: cn("p-4", className),
+      ...props
+    }
+  );
+}
+function CardContent({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsx11(
+    "div",
+    {
+      className: cn("p-4", className),
+      ...props
+    }
+  );
+}
+function CardFooter({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsx11(
+    "div",
+    {
+      className: cn(
+        "flex items-center justify-end gap-2 p-4",
+        className
+      ),
+      ...props
+    }
+  );
+}
+var CardRoot = forwardRef11(
+  ({ className, variant, ...props }, ref) => {
+    return /* @__PURE__ */ jsx11(
+      "div",
+      {
+        ref,
+        className: cn(cardVariants({ variant }), className),
+        ...props
+      }
+    );
+  }
+);
+CardRoot.displayName = "Card";
+
+// src/components/Card/index.ts
+var Card = Object.assign(CardRoot, {
+  Header: CardHeader,
+  Content: CardContent,
+  Footer: CardFooter
+});
 export {
   Button,
+  Card,
   Dialog2 as Dialog,
   Input,
   TabGroup,

@@ -1,7 +1,7 @@
-import { Plus, Search, Tractor, Trash, X } from "lucide-react";
+import { Plus, Search, Trash, X } from "lucide-react";
 import "./App.css";
 import { useState } from "react";
-import { Button, Dialog, Input, TabGroup } from "@divine-ui/core";
+import { Button, Dialog, Input, TabGroup, Card } from "@divine-ui/core";
 
 function DialogFooter() {
   return (
@@ -11,9 +11,6 @@ function DialogFooter() {
       </Button>
       <Button>
         Confirm
-      </Button>
-      <Button>
-        <Tractor />
       </Button>
     </div>
   )
@@ -84,6 +81,19 @@ function App() {
           showCloseButton
           footer={<DialogFooter />}
         />
+      </div>
+      <div className="w-60">
+        <Card>
+          <Card.Header>
+            Card Header
+          </Card.Header>
+          <Card.Content>
+            card content
+          </Card.Content>
+          <Card.Footer>
+            <DialogFooter />
+          </Card.Footer>
+        </Card>
       </div>
     </div>
   );

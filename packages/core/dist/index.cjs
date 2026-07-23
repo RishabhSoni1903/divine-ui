@@ -31,6 +31,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var index_exports = {};
 __export(index_exports, {
   Button: () => Button,
+  Card: () => Card,
   Dialog: () => Dialog2,
   Input: () => Input,
   TabGroup: () => TabGroup,
@@ -2570,9 +2571,89 @@ function Dialog2({
     )
   ] }) });
 }
+
+// src/components/Card/Card.tsx
+var import_class_variance_authority3 = require("class-variance-authority");
+var import_react5 = require("react");
+var import_jsx_runtime11 = require("react/jsx-runtime");
+var cardVariants = (0, import_class_variance_authority3.cva)(
+  "rounded-sm shadow-sm border border border-gray-300 bg-white text-slate-950 shadow-sm",
+  {
+    variants: {
+      variant: {
+        default: "",
+        outlined: "shadow-none",
+        elevated: "shadow-lg"
+      }
+    },
+    defaultVariants: {
+      variant: "default"
+    }
+  }
+);
+function CardHeader({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    "div",
+    {
+      className: cn("p-4", className),
+      ...props
+    }
+  );
+}
+function CardContent({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    "div",
+    {
+      className: cn("p-4", className),
+      ...props
+    }
+  );
+}
+function CardFooter({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    "div",
+    {
+      className: cn(
+        "flex items-center justify-end gap-2 p-4",
+        className
+      ),
+      ...props
+    }
+  );
+}
+var CardRoot = (0, import_react5.forwardRef)(
+  ({ className, variant, ...props }, ref) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+      "div",
+      {
+        ref,
+        className: cn(cardVariants({ variant }), className),
+        ...props
+      }
+    );
+  }
+);
+CardRoot.displayName = "Card";
+
+// src/components/Card/index.ts
+var Card = Object.assign(CardRoot, {
+  Header: CardHeader,
+  Content: CardContent,
+  Footer: CardFooter
+});
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Button,
+  Card,
   Dialog,
   Input,
   TabGroup,
