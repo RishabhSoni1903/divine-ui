@@ -2,6 +2,7 @@ import * as react from 'react';
 import { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, HTMLAttributes } from 'react';
 import * as class_variance_authority_types from 'class-variance-authority/types';
 import { VariantProps } from 'class-variance-authority';
+import * as zustand from 'zustand';
 import { ClassValue } from 'clsx';
 
 declare const buttonVariants: (props?: ({
@@ -63,6 +64,51 @@ declare const Card: react.ForwardRefExoticComponent<CardProps & react.RefAttribu
     Footer: typeof CardFooter;
 };
 
+type ToastVariant = "success" | "error" | "warning" | "info";
+interface ToastAction {
+    label: string;
+    onClick: () => void;
+}
+interface ToastItem {
+    id: string;
+    variant: ToastVariant;
+    title: ReactNode;
+    description?: ReactNode;
+    duration?: number;
+    action?: ToastAction;
+}
+
+declare function Toast({ id, variant, title, description, duration, action, }: ToastItem): react.JSX.Element;
+
+declare function ToastContainer(): react.JSX.Element;
+
+interface ToastProviderProps {
+    children: ReactNode;
+}
+declare function ToastProvider({ children }: ToastProviderProps): react.JSX.Element;
+
+declare const toast: {
+    success(title: ToastItem["title"], description?: ToastItem["description"]): void;
+    error(title: ToastItem["title"], description?: ToastItem["description"]): void;
+    warning(title: ToastItem["title"], description?: ToastItem["description"]): void;
+    info(title: ToastItem["title"], description?: ToastItem["description"]): void;
+    custom(toast: Omit<ToastItem, "id">): void;
+    dismiss(id: string): void;
+    dismissAll(): void;
+};
+
+interface ToastStore {
+    toasts: ToastItem[];
+    addToast: (toast: ToastItem) => void;
+    removeToast: (id: string) => void;
+    clearToasts: () => void;
+}
+declare const useToastStore: zustand.UseBoundStore<zustand.StoreApi<ToastStore>>;
+
+declare const toastVariants: (props?: ({
+    variant?: "success" | "error" | "warning" | "info" | null | undefined;
+} & class_variance_authority_types.ClassProp) | undefined) => string;
+
 declare function cn(...inputs: ClassValue[]): string;
 
-export { Button, type ButtonProps, Card, Dialog, type DialogProps, Input, type InputProps, TabGroup, type TabGroupProps, type TabType, cn, inputVariants };
+export { Button, type ButtonProps, Card, Dialog, type DialogProps, Input, type InputProps, TabGroup, type TabGroupProps, type TabType, Toast, type ToastAction, ToastContainer, type ToastItem, ToastProvider, type ToastVariant, cn, inputVariants, toast, toastVariants, useToastStore };
