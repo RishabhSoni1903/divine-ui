@@ -1,7 +1,7 @@
 import { Plus, Search, Trash, X } from "lucide-react";
 import "./App.css";
 import { useState } from "react";
-import { Button, Dialog, Input, TabGroup, Card } from "@divine-ui/core";
+import { Button, Dialog, Input, TabGroup, Card, ToastProvider, toast } from "@divine-ui/core";
 
 function DialogFooter() {
   return (
@@ -37,6 +37,7 @@ function App() {
   const [activeTab, setActiveTab] = useState("all");
   const [open, setOpen] = useState(false);
   return (
+    <ToastProvider>
     <div className="space-y-6 m-20">
       <div className="space-x-3">
         <Button>
@@ -95,7 +96,13 @@ function App() {
           </Card.Footer>
         </Card>
       </div>
+      <div>
+        <Button onClick={() => {
+          toast.warning("Woah! This is toast");
+        }}>Show alert</Button>
+      </div>
     </div>
+    </ToastProvider>
   );
 }
 

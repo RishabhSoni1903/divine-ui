@@ -222,12 +222,43 @@ var createLucideIcon = (iconName, iconNode) => {
   return Component;
 };
 
-// ../../node_modules/lucide-react/dist/esm/icons/x.mjs
+// ../../node_modules/lucide-react/dist/esm/icons/circle-alert.mjs
 var __iconNode = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
+  ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
+];
+var CircleAlert = createLucideIcon("circle-alert", __iconNode);
+
+// ../../node_modules/lucide-react/dist/esm/icons/circle-check.mjs
+var __iconNode2 = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+var CircleCheck = createLucideIcon("circle-check", __iconNode2);
+
+// ../../node_modules/lucide-react/dist/esm/icons/circle-x.mjs
+var __iconNode3 = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
+  ["path", { d: "m9 9 6 6", key: "z0biqf" }]
+];
+var CircleX = createLucideIcon("circle-x", __iconNode3);
+
+// ../../node_modules/lucide-react/dist/esm/icons/info.mjs
+var __iconNode4 = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M12 16v-4", key: "1dtifu" }],
+  ["path", { d: "M12 8h.01", key: "e9boi3" }]
+];
+var Info = createLucideIcon("info", __iconNode4);
+
+// ../../node_modules/lucide-react/dist/esm/icons/x.mjs
+var __iconNode5 = [
   ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
   ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
 ];
-var X = createLucideIcon("x", __iconNode);
+var X = createLucideIcon("x", __iconNode5);
 
 // ../../node_modules/@radix-ui/react-dialog/dist/index.mjs
 import * as React21 from "react";
@@ -2608,14 +2639,244 @@ var Card = Object.assign(CardRoot, {
   Content: CardContent,
   Footer: CardFooter
 });
+
+// src/components/Toast/Toast.tsx
+import { useEffect as useEffect13 } from "react";
+
+// src/components/Toast/toastVariants.ts
+import { cva as cva4 } from "class-variance-authority";
+var toastVariants = cva4(
+  `
+    relative
+    flex
+    items-start
+    gap-3
+
+    rounded-lg
+    border
+
+    p-4
+
+    shadow-lg
+
+    transition-all
+    duration-300
+
+    animate-in
+    fade-in
+    slide-in-from-right-5
+  `,
+  {
+    variants: {
+      variant: {
+        success: "border-green-200 bg-green-50 text-green-900",
+        error: "border-red-200 bg-red-50 text-red-900",
+        warning: "border-yellow-200 bg-yellow-50 text-yellow-900",
+        info: "border-blue-200 bg-blue-50 text-blue-900"
+      }
+    },
+    defaultVariants: {
+      variant: "info"
+    }
+  }
+);
+
+// ../../node_modules/zustand/esm/vanilla.mjs
+var createStoreImpl = (createState) => {
+  let state;
+  const listeners = /* @__PURE__ */ new Set();
+  const setState = (partial, replace) => {
+    const nextState = typeof partial === "function" ? partial(state) : partial;
+    if (!Object.is(nextState, state)) {
+      const previousState = state;
+      state = (replace != null ? replace : typeof nextState !== "object" || nextState === null) ? nextState : Object.assign({}, state, nextState);
+      listeners.forEach((listener) => listener(state, previousState));
+    }
+  };
+  const getState2 = () => state;
+  const getInitialState = () => initialState;
+  const subscribe = (listener) => {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  };
+  const api = { setState, getState: getState2, getInitialState, subscribe };
+  const initialState = state = createState(setState, getState2, api);
+  return api;
+};
+var createStore = ((createState) => createState ? createStoreImpl(createState) : createStoreImpl);
+
+// ../../node_modules/zustand/esm/react.mjs
+import React24 from "react";
+var identity = (arg) => arg;
+function useStore(api, selector = identity) {
+  const slice = React24.useSyncExternalStore(
+    api.subscribe,
+    React24.useCallback(() => selector(api.getState()), [api, selector]),
+    React24.useCallback(() => selector(api.getInitialState()), [api, selector])
+  );
+  React24.useDebugValue(slice);
+  return slice;
+}
+var createImpl = (createState) => {
+  const api = createStore(createState);
+  const useBoundStore = (selector) => useStore(api, selector);
+  Object.assign(useBoundStore, api);
+  return useBoundStore;
+};
+var create = ((createState) => createState ? createImpl(createState) : createImpl);
+
+// src/components/Toast/toastStore.ts
+var useToastStore = create((set) => ({
+  toasts: [],
+  addToast: (toast2) => set((state) => ({
+    toasts: [...state.toasts, toast2]
+  })),
+  removeToast: (id) => set((state) => ({
+    toasts: state.toasts.filter((toast2) => toast2.id !== id)
+  })),
+  clearToasts: () => set({
+    toasts: []
+  })
+}));
+
+// src/components/Toast/Toast.tsx
+import { jsx as jsx12, jsxs as jsxs4 } from "react/jsx-runtime";
+var icons = {
+  success: CircleCheck,
+  error: CircleX,
+  warning: CircleAlert,
+  info: Info
+};
+function Toast({
+  id,
+  variant,
+  title,
+  description,
+  duration = 4e3,
+  action
+}) {
+  const removeToast = useToastStore((state) => state.removeToast);
+  useEffect13(() => {
+    const timer = window.setTimeout(() => {
+      removeToast(id);
+    }, duration);
+    return () => clearTimeout(timer);
+  }, [duration, id, removeToast]);
+  const Icon2 = icons[variant];
+  return /* @__PURE__ */ jsxs4("div", { className: cn(toastVariants({ variant })), children: [
+    /* @__PURE__ */ jsx12("div", { className: "mt-0.5 shrink-0", children: /* @__PURE__ */ jsx12(Icon2, { className: "size-5" }) }),
+    /* @__PURE__ */ jsxs4("div", { className: "flex flex-1 flex-col", children: [
+      /* @__PURE__ */ jsx12("span", { className: "font-medium", children: title }),
+      description && /* @__PURE__ */ jsx12("span", { className: "mt-1 text-sm opacity-80", children: description }),
+      action && /* @__PURE__ */ jsx12(
+        Button,
+        {
+          variant: "outline",
+          className: "mt-3 w-fit",
+          onClick: action.onClick,
+          children: action.label
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsx12(
+      "button",
+      {
+        onClick: () => removeToast(id),
+        className: "\n          rounded-md\n          p-1\n          transition-colors\n          hover:bg-black/10\n        ",
+        children: /* @__PURE__ */ jsx12(X, { className: "size-4" })
+      }
+    )
+  ] });
+}
+
+// src/components/Toast/ToastContainer.tsx
+import { jsx as jsx13 } from "react/jsx-runtime";
+function ToastContainer() {
+  const toasts = useToastStore((state) => state.toasts);
+  return /* @__PURE__ */ jsx13(
+    "div",
+    {
+      className: "\n        fixed\n        top-4\n        right-4\n        z-9999\n\n        flex\n        w-full\n        max-w-sm\n        flex-col\n        gap-3\n      ",
+      children: toasts.map((toast2) => /* @__PURE__ */ jsx13(
+        Toast,
+        {
+          ...toast2
+        },
+        toast2.id
+      ))
+    }
+  );
+}
+
+// src/components/Toast/ToastProvider.tsx
+import { Fragment as Fragment5, jsx as jsx14, jsxs as jsxs5 } from "react/jsx-runtime";
+function ToastProvider({ children }) {
+  return /* @__PURE__ */ jsxs5(Fragment5, { children: [
+    children,
+    /* @__PURE__ */ jsx14(ToastContainer, {})
+  ] });
+}
+
+// src/components/Toast/toastApi.ts
+function createToast(toast2) {
+  useToastStore.getState().addToast({
+    id: crypto.randomUUID(),
+    ...toast2
+  });
+}
+var toast = {
+  success(title, description) {
+    createToast({
+      variant: "success",
+      title,
+      description
+    });
+  },
+  error(title, description) {
+    createToast({
+      variant: "error",
+      title,
+      description
+    });
+  },
+  warning(title, description) {
+    createToast({
+      variant: "warning",
+      title,
+      description
+    });
+  },
+  info(title, description) {
+    createToast({
+      variant: "info",
+      title,
+      description
+    });
+  },
+  custom(toast2) {
+    createToast(toast2);
+  },
+  dismiss(id) {
+    useToastStore.getState().removeToast(id);
+  },
+  dismissAll() {
+    useToastStore.getState().clearToasts();
+  }
+};
 export {
   Button,
   Card,
   Dialog2 as Dialog,
   Input,
   TabGroup,
+  Toast,
+  ToastContainer,
+  ToastProvider,
   cn,
-  inputVariants
+  inputVariants,
+  toast,
+  toastVariants,
+  useToastStore
 };
 /*! Bundled license information:
 
@@ -2628,6 +2889,10 @@ lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs:
 lucide-react/dist/esm/context.mjs:
 lucide-react/dist/esm/Icon.mjs:
 lucide-react/dist/esm/createLucideIcon.mjs:
+lucide-react/dist/esm/icons/circle-alert.mjs:
+lucide-react/dist/esm/icons/circle-check.mjs:
+lucide-react/dist/esm/icons/circle-x.mjs:
+lucide-react/dist/esm/icons/info.mjs:
 lucide-react/dist/esm/icons/x.mjs:
 lucide-react/dist/esm/lucide-react.mjs:
   (**
